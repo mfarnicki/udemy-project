@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <a href="#" class="navbar-brand">Recipe Book</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="isMenuCollapsed = !isMenuCollapsed"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="#" class="nav-link" (click)="isMenuCollapsed = true">
+            Recipes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link" (click)="isMenuCollapsed = true">
+            Shopping List
+          </a>
+        </li>
+        <li class="nav-item" ngbDropdown>
+          <a role="button" class="nav-link" ngbDropdownToggle>Manage</a>
+          <div ngbDropdownMenu class="dropdown-menu">
+            <a ngbDropdownItem href="#">Save Data</a>
+            <a ngbDropdownItem href="#">Fetch Data</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
