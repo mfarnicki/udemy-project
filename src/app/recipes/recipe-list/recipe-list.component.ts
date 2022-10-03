@@ -9,9 +9,9 @@ import { Recipe } from '../recipe.model';
 export class RecipeListComponent implements OnInit {
   recipes: Recipe[] = [
     new Recipe(
-      'Tomato',
-      'A ripe, red tomato',
-      'https://bi.im-g.pl/im/03/da/17/z25010179ICR,Kiedy-kupujemy-pomidory--wybierajmy-sztuki-dojrzal.jpg'
+      'Caesar salad',
+      'Fresh, yummy dish',
+      'https://www.seriouseats.com/thmb/ugNLQE6hZcoZx0Tzu780h1L3lfc=/3750x3750/smart/filters:no_upscale()/the-best-caesar-salad-recipe-06-40e70f549ba2489db09355abd62f79a9.jpg'
     ),
   ];
   constructor() {}
