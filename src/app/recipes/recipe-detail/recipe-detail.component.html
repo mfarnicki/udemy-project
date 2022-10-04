@@ -15,15 +15,15 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <div class="btn-group">
-      <button class="btn btn-primary dropdown-toggle" type="button">
-        Manage Recipe <span class="caret"></span>
+    <div ngbDropdown>
+      <button type="button" class="btn btn-primary" ngbDropdownToggle>
+        Manage Recipe
       </button>
-      <ul class="dropdown-menu">
-        <li><a href="#">To Shopping List</a></li>
-        <li><a href="#">Edit Recipe</a></li>
-        <li><a href="#">Delete Recipe</a></li>
-      </ul>
+      <div ngbDropdownMenu>
+        <a ngbDropdownItem href="#">To Shopping List</a>
+        <a ngbDropdownItem href="#">Edit Recipe</a>
+        <a ngbDropdownItem href="#">Delete Recipe</a>
+      </div>
     </div>
   </div>
 </div>
