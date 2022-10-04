@@ -1,1 +1,21 @@
-<p>recipe-item works!</p>
+<a
+  *ngIf="recipe"
+  href="#"
+  class="list-group-item list-group-item-action"
+  (click)="onRecipeSelected(recipe)"
+>
+  <div class="clearfix">
+    <div class="float-start">
+      <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
+      <p class="list-group-item-text">
+        {{ recipe.description }}
+      </p>
+    </div>
+    <img
+      [src]="recipe.imagePath"
+      alt="{{ recipe.name }}"
+      class="img-responsive float-end"
+      style="max-height: 50px"
+    />
+  </div>
+</a>
