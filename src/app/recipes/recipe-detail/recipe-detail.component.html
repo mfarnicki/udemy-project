@@ -20,7 +20,9 @@
         Manage Recipe
       </button>
       <div ngbDropdownMenu>
-        <a ngbDropdownItem href="#">To Shopping List</a>
+        <a ngbDropdownItem href="#" (click)="addIngredientsToShoppingList()"
+          >To Shopping List</a
+        >
         <a ngbDropdownItem href="#">Edit Recipe</a>
         <a ngbDropdownItem href="#">Delete Recipe</a>
       </div>
