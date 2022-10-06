@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
-    <a href="#" class="navbar-brand" (click)="onNavigateTo('')">Recipe Book</a>
+    <a class="navbar-brand" routerLink="/">Recipe Book</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -12,18 +12,20 @@
       <ul class="navbar-nav">
         <li class="nav-item">
           <a
-            href="#"
             class="nav-link"
-            (click)="isMenuCollapsed = true; onNavigateTo('recipes')"
+            routerLink="/recipes"
+            routerLinkActive="active"
+            (click)="isMenuCollapsed = true"
           >
             Recipes
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item selected">
           <a
-            href="#"
             class="nav-link"
-            (click)="isMenuCollapsed = true; onNavigateTo('shopping-list')"
+            routerLink="/shopping-list"
+            routerLinkActive="active"
+            (click)="isMenuCollapsed = true"
           >
             Shopping List
           </a>
@@ -31,8 +33,8 @@
         <li class="nav-item" ngbDropdown>
           <a role="button" class="nav-link" ngbDropdownToggle>Manage</a>
           <div ngbDropdownMenu class="dropdown-menu">
-            <a ngbDropdownItem href="#">Save Data</a>
-            <a ngbDropdownItem href="#">Fetch Data</a>
+            <a ngbDropdownItem>Save Data</a>
+            <a ngbDropdownItem>Fetch Data</a>
           </div>
         </li>
       </ul>
