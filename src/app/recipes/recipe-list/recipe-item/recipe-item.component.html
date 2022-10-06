@@ -1,7 +1,8 @@
 <a
   *ngIf="recipe"
   class="list-group-item list-group-item-action"
-  (click)="onRecipeSelected()"
+  [routerLink]="[recipeIndex]"
+  routerLinkActive="active"
 >
   <div class="clearfix">
     <div class="float-start">
