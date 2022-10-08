@@ -32,9 +32,9 @@
             {{ editedItem ? "Update" : "Add" }}
           </button>
           <button
+            *ngIf="editedItem !== null"
             class="btn btn-danger"
             type="button"
-            [disabled]="editedItem === null"
             (click)="onDelete()"
           >
             Delete

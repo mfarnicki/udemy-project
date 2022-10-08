@@ -1,15 +1,15 @@
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-12">
     <img
       [src]="recipe.imagePath"
       [alt]="recipe.name"
-      class="img-responsive"
-      style="max-height: 100px"
+      class="img-fluid img-thumbnail"
+      style="max-height: 200px"
     />
   </div>
 </div>
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-12">
     <h1>{{ recipe.name }}</h1>
   </div>
 </div>
@@ -24,7 +24,7 @@
           >To Shopping List</a
         >
         <a ngbDropdownItem [routerLink]="['edit']">Edit Recipe</a>
-        <a ngbDropdownItem>Delete Recipe</a>
+        <a ngbDropdownItem (click)="onDeleteRecipe()">Delete Recipe</a>
       </div>
     </div>
   </div>
