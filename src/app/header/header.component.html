@@ -33,8 +33,8 @@
         <li class="nav-item" ngbDropdown>
           <a role="button" class="nav-link" ngbDropdownToggle>Manage</a>
           <div ngbDropdownMenu class="dropdown-menu">
-            <a ngbDropdownItem>Save Data</a>
-            <a ngbDropdownItem>Fetch Data</a>
+            <a ngbDropdownItem (click)="onSaveData()">Save Data</a>
+            <a ngbDropdownItem (click)="onFetchData()">Fetch Data</a>
           </div>
         </li>
       </ul>
