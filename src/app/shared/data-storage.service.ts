@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs';
 import { Recipe } from '../recipes/recipe.model';
 import { RecipeService } from './recipe.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DataStorageService {
-  private baseUrl =
-    'https://udemy-project---angular-default-rtdb.europe-west1.firebasedatabase.app/';
+  private baseUrl: string = environment.databaseUrl;
+
   constructor(private http: HttpClient, private recipeService: RecipeService) {}
 
   storeRecipes() {

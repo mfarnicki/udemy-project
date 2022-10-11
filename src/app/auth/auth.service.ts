@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from './user.model';
 
 export interface AuthResponseData {
@@ -21,7 +22,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
   private baseUrl = 'https://identitytoolkit.googleapis.com/v1/accounts';
-  private apiKey = 'AIzaSyDd454p5d0GrZ45Pm6faBIFvUIhD_kmzSw';
+  private apiKey = environment.authApiKey;
 
   signup(email: string, password: string) {
     return this.http
