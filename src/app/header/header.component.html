@@ -10,7 +10,7 @@
     </button>
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
       <ul class="navbar-nav">
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isAuthenticated">
           <a
             class="nav-link"
             routerLink="/recipes"
@@ -20,7 +20,17 @@
             Recipes
           </a>
         </li>
-        <li class="nav-item selected">
+        <li class="nav-item" *ngIf="!isAuthenticated">
+          <a
+            class="nav-link"
+            routerLink="/auth"
+            routerLinkActive="active"
+            (click)="isMenuCollapsed = true"
+          >
+            Authenticate
+          </a>
+        </li>
+        <li class="nav-item">
           <a
             class="nav-link"
             routerLink="/shopping-list"
@@ -30,7 +40,10 @@
             Shopping List
           </a>
         </li>
-        <li class="nav-item" ngbDropdown>
+        <li class="nav-item" *ngIf="isAuthenticated">
+          <a class="nav-link" (click)="onLogout()">Logout</a>
+        </li>
+        <li class="nav-item" ngbDropdown *ngIf="isAuthenticated">
           <a role="button" class="nav-link" ngbDropdownToggle>Manage</a>
           <div ngbDropdownMenu class="dropdown-menu">
             <a ngbDropdownItem (click)="onSaveData()">Save Data</a>
