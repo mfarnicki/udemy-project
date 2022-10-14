@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs';
 import { Recipe } from '../recipes/recipe.model';
 import { RecipeService } from './recipe.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DataStorageService {
