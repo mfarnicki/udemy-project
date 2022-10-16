@@ -20,6 +20,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   @ViewChild(PlaceholderDirective, { static: false })
   alertHost!: PlaceholderDirective;
   private closeSub: Subscription = Subscription.EMPTY;
+  private storeSub: Subscription = Subscription.EMPTY;
 
   constructor(
     private authService: AuthService,
@@ -28,7 +29,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.store.select('auth').subscribe((authState) => {
+    this.storeSub = this.store.select('auth').subscribe((authState) => {
       this.isLoading = authState.loading;
       this.error = authState.authError || '';
       if (this.error) {
@@ -40,6 +41,10 @@ export class AuthComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.closeSub) {
       this.closeSub.unsubscribe();
+    }
+
+    if (this.storeSub) {
+      this.storeSub.unsubscribe();
     }
   }
 
@@ -54,34 +59,18 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     const email = loginForm.value.email;
     const password = loginForm.value.password;
-    let logObservable: Observable<AuthResponseData>;
 
-    this.isLoading = true;
     if (this.isLoginMode) {
-      // logObservable = this.authService.login(email, password);
       this.store.dispatch(new authActions.LoginStart({ email, password }));
     } else {
-      logObservable = this.authService.signup(email, password);
+      this.store.dispatch(new authActions.SignupStart({ email, password }));
     }
-
-    // logObservable.subscribe({
-    //   next: (response) => {
-    //     this.error = '';
-    //     this.isLoading = false;
-    //     this.router.navigate(['/recipes']);
-    //   },
-    //   error: (err: Error) => {
-    //     this.error = err.message;
-    //     this.showErrorAlert(err);
-    //     this.isLoading = false;
-    //   },
-    // });
 
     loginForm.reset();
   }
 
   onHandleError() {
-    this.error = '';
+    this.store.dispatch(new authActions.ClearError());
   }
 
   private showErrorAlert(errorMessage: string) {
