@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../auth.service';
+import { User } from '../user.model';
 import * as AuthActions from './auth.actions';
 
 const baseUrl = 'https://identitytoolkit.googleapis.com/v1/accounts';
@@ -12,6 +14,14 @@ const handleAuthResponse = (resData: AuthResponseData) => {
   const expirationDate = new Date(
     new Date().getTime() + +resData.expiresIn * 1000
   );
+  const user = new User(
+    resData.email,
+    resData.localId,
+    resData.idToken,
+    expirationDate
+  );
+  localStorage.setItem('userData', JSON.stringify(user));
+
   return new AuthActions.Login({
     email: resData.email,
     userId: resData.localId,
@@ -65,6 +75,9 @@ export class AuthEffects {
             { params: { key: environment.authApiKey } }
           )
           .pipe(
+            tap((resData: AuthResponseData) =>
+              this.authService.setLogoutTimer(+resData.expiresIn * 1000)
+            ),
             map((resData: AuthResponseData) => handleAuthResponse(resData)),
             catchError((errorResponse) => handleErrorResponse(errorResponse))
           );
@@ -87,6 +100,9 @@ export class AuthEffects {
             { params: { key: environment.authApiKey } }
           )
           .pipe(
+            tap((resData: AuthResponseData) =>
+              this.authService.setLogoutTimer(+resData.expiresIn * 1000)
+            ),
             map((resData: AuthResponseData) => handleAuthResponse(resData)),
             catchError((errorResponse) => handleErrorResponse(errorResponse))
           );
@@ -94,10 +110,23 @@ export class AuthEffects {
     )
   );
 
+  authLogout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.LOGOUT),
+        tap(() => {
+          this.authService.clearLogoutTimer();
+          localStorage.removeItem('userData');
+          this.router.navigate(['/auth']);
+        })
+      ),
+    { dispatch: false }
+  );
+
   authRedirect$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.LOGIN, AuthActions.LOGOUT),
+        ofType(AuthActions.LOGIN),
         tap(() => {
           this.router.navigate(['/']);
         })
@@ -105,9 +134,43 @@ export class AuthEffects {
     { dispatch: false }
   );
 
+  autoLogin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.AUTO_LOGIN),
+      map(() => {
+        const userData = localStorage.getItem('userData');
+        if (userData) {
+          const user = JSON.parse(userData);
+          const loadedUser = new User(
+            user.email,
+            user.id,
+            user._token,
+            new Date(user._tokenExpirationDate)
+          );
+          if (loadedUser.token) {
+            const expirationDuration =
+              new Date(user._tokenExpirationDate).getTime() -
+              new Date().getTime();
+            this.authService.setLogoutTimer(expirationDuration);
+
+            return new AuthActions.Login({
+              email: loadedUser.email,
+              userId: loadedUser.id,
+              token: loadedUser.token,
+              expirationDate: new Date(user._tokenExpirationDate),
+            });
+          }
+        }
+
+        return { type: '' };
+      })
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 }
