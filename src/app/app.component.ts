@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthService } from './auth/auth.service';
 import * as authActions from './auth/store/auth.actions';
 import { LoggingService } from './logging.service';
 import * as appReducer from './store/app.reducer';
@@ -14,13 +14,15 @@ export class AppComponent implements OnInit {
   title = 'udemy-project';
 
   constructor(
-    private authService: AuthService,
     private store: Store<appReducer.AppState>,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new authActions.AutoLogin());
+    if (isPlatformBrowser(this.platformId)) {
+      this.store.dispatch(new authActions.AutoLogin());
+    }
     this.loggingService.printLog('Hello from AppComponent');
   }
 }

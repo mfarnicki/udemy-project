@@ -6,7 +6,8 @@ import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../auth.service';
 import { User } from '../user.model';
-import * as AuthActions from './auth.actions';
+import * as authActions from './auth.actions';
+import * as appActions from 'src/app/store/app.actions';
 
 const baseUrl = 'https://identitytoolkit.googleapis.com/v1/accounts';
 
@@ -22,7 +23,7 @@ const handleAuthResponse = (resData: AuthResponseData) => {
   );
   localStorage.setItem('userData', JSON.stringify(user));
 
-  return new AuthActions.Login({
+  return new authActions.Login({
     email: resData.email,
     userId: resData.localId,
     token: resData.idToken,
@@ -46,7 +47,7 @@ const handleErrorResponse = (errorResponse: HttpErrorResponse) => {
       errorMessage = 'The password is invalid!';
       break;
   }
-  return of(new AuthActions.LoginFail(errorMessage));
+  return of(new authActions.LoginFail(errorMessage));
 };
 
 export interface AuthResponseData {
@@ -63,8 +64,8 @@ export interface AuthResponseData {
 export class AuthEffects {
   authSignup$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.SIGNUP_START),
-      switchMap((signupAction: AuthActions.SignupStart) => {
+      ofType(authActions.SIGNUP_START),
+      switchMap((signupAction: authActions.SignupStart) => {
         return this.http
           .post<AuthResponseData>(
             `${baseUrl}:signUp`,
@@ -88,8 +89,8 @@ export class AuthEffects {
 
   authLogin$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.LOGIN_START),
-      switchMap((authData: AuthActions.LoginStart) => {
+      ofType(authActions.LOGIN_START),
+      switchMap((authData: authActions.LoginStart) => {
         return this.http
           .post<AuthResponseData>(
             `${baseUrl}:signInWithPassword`,
@@ -114,7 +115,7 @@ export class AuthEffects {
   authLogout$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.LOGOUT),
+        ofType(authActions.LOGOUT),
         tap(() => {
           this.authService.clearLogoutTimer();
           localStorage.removeItem('userData');
@@ -127,8 +128,8 @@ export class AuthEffects {
   authRedirect$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.LOGIN),
-        tap((loginAction: AuthActions.Login) => {
+        ofType(authActions.LOGIN),
+        tap((loginAction: authActions.Login) => {
           if (loginAction.payload.redirect) {
             this.router.navigate(['/']);
           }
@@ -139,7 +140,7 @@ export class AuthEffects {
 
   autoLogin$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.AUTO_LOGIN),
+      ofType(authActions.AUTO_LOGIN),
       map(() => {
         const userData = localStorage.getItem('userData');
         if (userData) {
@@ -156,7 +157,7 @@ export class AuthEffects {
               new Date().getTime();
             this.authService.setLogoutTimer(expirationDuration);
 
-            return new AuthActions.Login({
+            return new authActions.Login({
               email: loadedUser.email,
               userId: loadedUser.id,
               token: loadedUser.token,
@@ -166,7 +167,7 @@ export class AuthEffects {
           }
         }
 
-        return { type: '' };
+        return new appActions.Empty();
       })
     )
   );
