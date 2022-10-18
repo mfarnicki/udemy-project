@@ -17,4 +17,6 @@ export class Recipe {
     this.imagePath = imagePath;
     this.ingredients = ingredients;
   }
+
+  public static readonly NULL: Recipe = new Recipe('', '', '', []);
 }

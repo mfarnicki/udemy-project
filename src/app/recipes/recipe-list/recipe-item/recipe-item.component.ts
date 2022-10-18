@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
-import { RecipeService } from 'src/app/shared/recipe.service';
 import { Recipe } from '../../recipe.model';
 
 @Component({
