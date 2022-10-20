@@ -40,14 +40,12 @@
             Shopping List
           </a>
         </li>
-        <li class="nav-item" *ngIf="isAuthenticated">
-          <a class="nav-link" (click)="onLogout()">Logout</a>
-        </li>
         <li class="nav-item" ngbDropdown *ngIf="isAuthenticated">
           <a role="button" class="nav-link" ngbDropdownToggle>Manage</a>
           <div ngbDropdownMenu class="dropdown-menu">
             <a ngbDropdownItem (click)="onSaveData()">Save Data</a>
             <a ngbDropdownItem (click)="onFetchData()">Fetch Data</a>
+            <a ngbDropdownItem (click)="onLogout()">Logout</a>
           </div>
         </li>
       </ul>
