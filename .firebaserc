@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "udemy-angular-course-fed46"
+  },
+  "targets": {
+    "udemy-angular-course-fed46": {
+      "hosting": {
+        "udemy-project": [
+          "udemy-angular-course-fed46"
+        ]
+      }
+    }
   }
 }

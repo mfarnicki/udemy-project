@@ -153,6 +153,18 @@
             }
           },
           "defaultConfiguration": "production"
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "udemy-project:build:production",
+            "firebaseProject": "udemy-angular-course-fed46",
+            "firebaseHostingSite": "udemy-angular-course-fed46",
+            "serverTarget": "udemy-project:server:production",
+            "prerenderTarget": "udemy-project:prerender:production"
+          }
         }
       }
     }
